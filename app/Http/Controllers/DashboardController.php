@@ -19,7 +19,7 @@ class DashboardController extends Controller
             'beanDeliveryCount' => BeanDelivery::count(),
             'productionOrderCount' => ProductionOrder::count(),
             'productionLogCount' => ProductionLog::count(),
-            'activeBreakdownCount' => MachineBreakdown::whereNull('resolved_at')->count(),
+            'activeBreakdownCount' => MachineBreakdown::where('status', '!=', 'resolved')->count(),
             'qualityCheckCount' => QualityCheck::count(),
 
             'recentDeliveries' => BeanDelivery::with('user')->latest()->take(5)->get(),

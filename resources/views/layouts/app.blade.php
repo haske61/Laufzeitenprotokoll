@@ -71,8 +71,7 @@
 
             <div class="collapse navbar-collapse" id="mainNavbar">
 
-                {{-- Left-side navigation (visible only when authenticated) --}}
-                @auth
+                {{-- Left-side navigation (always visible) --}}
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                     {{-- Dashboard --}}
@@ -91,7 +90,7 @@
                         </a>
                     </li>
 
-                    {{-- Produktionsaufträge (Production Orders) - Dropdown --}}
+                    {{-- Produktionsauftraege (Production Orders) - Dropdown --}}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {{ request()->routeIs('production-orders.*') ? 'active' : '' }}"
                            href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -101,19 +100,19 @@
                             <li>
                                 <a class="dropdown-item" href="{{ route('production-orders.index', ['type' => 'nibs']) }}">
                                     <i class="bi bi-circle-fill me-1 text-warning" style="font-size: 0.5rem;"></i>
-                                    {{ __('nav.production_orders_nibs') }}
+                                    {{ __('nav.nibs_orders') }}
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('production-orders.index', ['type' => 'mass']) }}">
                                     <i class="bi bi-circle-fill me-1 text-info" style="font-size: 0.5rem;"></i>
-                                    {{ __('nav.production_orders_mass') }}
+                                    {{ __('nav.mass_orders') }}
                                 </a>
                             </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('production-orders.index') }}">
-                                    <i class="bi bi-list-ul me-1"></i>{{ __('nav.production_orders_all') }}
+                                    <i class="bi bi-list-ul me-1"></i>{{ __('nav.all_orders') }}
                                 </a>
                             </li>
                         </ul>
@@ -127,7 +126,7 @@
                         </a>
                     </li>
 
-                    {{-- Maschinenstörungen (Machine Breakdowns) --}}
+                    {{-- Maschinenstoerungen (Machine Breakdowns) --}}
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('machine-breakdowns.*') ? 'active' : '' }}"
                            href="{{ route('machine-breakdowns.index') }}">
@@ -135,7 +134,7 @@
                         </a>
                     </li>
 
-                    {{-- Qualitätsprüfungen (Quality Checks) --}}
+                    {{-- Qualitaetspruefungen (Quality Checks) --}}
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('quality-checks.*') ? 'active' : '' }}"
                            href="{{ route('quality-checks.index') }}">
@@ -143,8 +142,9 @@
                         </a>
                     </li>
 
-                    {{-- Admin Dropdown (only for admin users) --}}
-                    @if(auth()->user()->is_admin ?? false)
+                    {{-- Admin Dropdown (only for logged-in admin) --}}
+                    @auth
+                    @if(auth()->user()->isAdmin())
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {{ request()->routeIs('admin.*') ? 'active' : '' }}"
                            href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -164,9 +164,9 @@
                         </ul>
                     </li>
                     @endif
+                    @endauth
 
                 </ul>
-                @endauth
 
                 {{-- Right-side navigation --}}
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -181,20 +181,20 @@
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                             <li>
                                 <a class="dropdown-item {{ app()->getLocale() === 'de' ? 'active' : '' }}"
-                                   href="{{ url('locale/de') }}">
+                                   href="{{ route('language.switch', 'de') }}">
                                     Deutsch (DE)
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item {{ app()->getLocale() === 'en' ? 'active' : '' }}"
-                                   href="{{ url('locale/en') }}">
+                                   href="{{ route('language.switch', 'en') }}">
                                     English (EN)
                                 </a>
                             </li>
                         </ul>
                     </li>
 
-                    {{-- User Dropdown / Login --}}
+                    {{-- Admin Login / Logout --}}
                     @auth
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button"
@@ -215,7 +215,7 @@
                     @else
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('login') }}">
-                            <i class="bi bi-box-arrow-in-right me-1"></i>{{ __('nav.login') }}
+                            <i class="bi bi-shield-lock me-1"></i>Admin Login
                         </a>
                     </li>
                     @endauth
@@ -249,17 +249,9 @@
             </div>
         @endif
 
-        @if(session('info'))
-            <div class="alert alert-info alert-dismissible fade show" role="alert">
-                <i class="bi bi-info-circle me-1"></i> {{ session('info') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-
         @if($errors->any())
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <i class="bi bi-exclamation-circle me-1"></i>
-                <strong>{{ __('messages.validation_errors') }}</strong>
                 <ul class="mb-0 mt-1">
                     @foreach($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -280,16 +272,16 @@
         <div class="container-fluid">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <small>&copy; {{ date('Y') }} Laufzeitenprotokoll. {{ __('footer.all_rights_reserved') }}</small>
+                    <small>&copy; {{ date('Y') }} Laufzeitenprotokoll</small>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <small>{{ __('footer.cacao_production_tracking') }}</small>
+                    <small>{{ __('footer.description') }}</small>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- Bootstrap 5 JS Bundle (includes Popper) -->
+    <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>

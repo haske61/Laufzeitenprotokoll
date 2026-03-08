@@ -19,6 +19,8 @@
             </span>
         </div>
         <div class="d-flex gap-2">
+            @auth
+            @if(auth()->user()->isAdmin())
             <a href="{{ route('production-orders.edit', $productionOrder) }}" class="btn btn-warning">
                 <i class="bi bi-pencil"></i> {{ __('Edit') }}
             </a>
@@ -29,6 +31,8 @@
                     <i class="bi bi-trash"></i> {{ __('Delete') }}
                 </button>
             </form>
+            @endif
+            @endauth
             <a href="{{ route('production-orders.index') }}" class="btn btn-secondary">
                 <i class="bi bi-arrow-left"></i> {{ __('Back') }}
             </a>

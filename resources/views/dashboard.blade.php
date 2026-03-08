@@ -18,6 +18,8 @@
 </div>
 
 {{-- Quick Action Buttons --}}
+@auth
+@if(auth()->user()->isAdmin())
 <div class="mb-4">
     <a href="{{ route('bean-deliveries.create') }}" class="btn btn-primary me-2">
         <i class="bi bi-plus-circle me-1"></i>{{ __('dashboard.new_delivery') }}
@@ -29,6 +31,8 @@
         <i class="bi bi-plus-circle me-1"></i>{{ __('dashboard.report_breakdown') }}
     </a>
 </div>
+@endif
+@endauth
 
 {{-- Statistics Cards --}}
 <div class="row g-4 mb-4">

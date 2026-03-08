@@ -77,14 +77,10 @@
             </div>
         </div>
 
-        {{-- Register Link --}}
         <div class="text-center mt-3">
-            <p class="text-muted">
-                {{ __('auth.no_account') }}
-                <a href="{{ route('register') }}" class="text-decoration-none">
-                    {{ __('auth.register') }}
-                </a>
-            </p>
+            <a href="{{ route('dashboard') }}" class="text-muted text-decoration-none">
+                <i class="bi bi-arrow-left me-1"></i>{{ __('common.back') }}
+            </a>
         </div>
 
     </div>

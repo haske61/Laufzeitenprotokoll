@@ -4,9 +4,13 @@
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>{{ __('Bean Deliveries') }}</h1>
+        @auth
+        @if(auth()->user()->isAdmin())
         <a href="{{ route('bean-deliveries.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-lg"></i> {{ __('New Delivery') }}
         </a>
+        @endif
+        @endauth
     </div>
 
     @if(session('success'))
@@ -51,6 +55,8 @@
                                         <a href="{{ route('bean-deliveries.show', $delivery) }}" class="btn btn-outline-info" title="{{ __('View') }}">
                                             <i class="bi bi-eye"></i>
                                         </a>
+                                        @auth
+                                        @if(auth()->user()->isAdmin())
                                         <a href="{{ route('bean-deliveries.edit', $delivery) }}" class="btn btn-outline-warning" title="{{ __('Edit') }}">
                                             <i class="bi bi-pencil"></i>
                                         </a>
@@ -61,6 +67,8 @@
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
+                                        @endif
+                                        @endauth
                                     </div>
                                 </td>
                             </tr>

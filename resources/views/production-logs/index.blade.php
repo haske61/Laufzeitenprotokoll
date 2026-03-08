@@ -4,9 +4,13 @@
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>{{ __('Production Logs') }}</h1>
+        @auth
+        @if(auth()->user()->isAdmin())
         <a href="{{ route('production-logs.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-lg"></i> {{ __('New Log') }}
         </a>
+        @endif
+        @endauth
     </div>
 
     @if(session('success'))
@@ -55,6 +59,8 @@
                                         <a href="{{ route('production-logs.show', $log) }}" class="btn btn-outline-info" title="{{ __('View') }}">
                                             <i class="bi bi-eye"></i>
                                         </a>
+                                        @auth
+                                        @if(auth()->user()->isAdmin())
                                         <a href="{{ route('production-logs.edit', $log) }}" class="btn btn-outline-warning" title="{{ __('Edit') }}">
                                             <i class="bi bi-pencil"></i>
                                         </a>
@@ -65,6 +71,8 @@
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
+                                        @endif
+                                        @endauth
                                     </div>
                                 </td>
                             </tr>
